@@ -1,0 +1,278 @@
+
+Running HFPage Tests tests...
+
+  Test 1: Page Initialization Checks
+Current Page No.: 7, Next Page No.: 8, Prev Page No.: -1, Available Space: 1000
+Page Empty as expected.
+dumpPage, this: 0x7fff7ebfad30
+curPage= 7, nextPage=8
+freePtr=0,  freeSpace=1004, slotCnt=0
+
+  Test 2: Insert and traversal of records
+Inserted record, RID 7, 0
+Inserted record, RID 7, 1
+Inserted record, RID 7, 2
+Inserted record, RID 7, 3
+Inserted record, RID 7, 4
+Inserted record, RID 7, 5
+Inserted record, RID 7, 6
+Inserted record, RID 7, 7
+Inserted record, RID 7, 8
+Inserted record, RID 7, 9
+Inserted record, RID 7, 10
+Inserted record, RID 7, 11
+Inserted record, RID 7, 12
+Inserted record, RID 7, 13
+Inserted record, RID 7, 14
+Inserted record, RID 7, 15
+Inserted record, RID 7, 16
+Inserted record, RID 7, 17
+Inserted record, RID 7, 18
+Inserted record, RID 7, 19
+Retrieved record, RID 7, 0
+Retrieved record, RID 7, 1
+Retrieved record, RID 7, 2
+Retrieved record, RID 7, 3
+Retrieved record, RID 7, 4
+Retrieved record, RID 7, 5
+Retrieved record, RID 7, 6
+Retrieved record, RID 7, 7
+Retrieved record, RID 7, 8
+Retrieved record, RID 7, 9
+Retrieved record, RID 7, 10
+Retrieved record, RID 7, 11
+Retrieved record, RID 7, 12
+Retrieved record, RID 7, 13
+Retrieved record, RID 7, 14
+Retrieved record, RID 7, 15
+Retrieved record, RID 7, 16
+Retrieved record, RID 7, 17
+Retrieved record, RID 7, 18
+Retrieved record, RID 7, 19
+
+  Test 3: Insert and Delete fixed-size records
+Inserted record, RID 7, 0
+Inserted record, RID 7, 1
+Inserted record, RID 7, 2
+Inserted record, RID 7, 3
+Inserted record, RID 7, 4
+Inserted record, RID 7, 5
+Inserted record, RID 7, 6
+Inserted record, RID 7, 7
+Inserted record, RID 7, 8
+Inserted record, RID 7, 9
+Inserted record, RID 7, 10
+Inserted record, RID 7, 11
+Inserted record, RID 7, 12
+Inserted record, RID 7, 13
+Inserted record, RID 7, 14
+Inserted record, RID 7, 15
+Inserted record, RID 7, 16
+Inserted record, RID 7, 17
+Inserted record, RID 7, 18
+Inserted record, RID 7, 19
+Deleting Records
+Deleting Rid(7,0).
+Deleting Rid(7,4).
+Deleting Rid(7,8).
+Deleting Rid(7,12).
+Deleting Rid(7,19).
+After Deletion.
+Retrieving record 7, 1
+Retrieving record 7, 2
+Retrieving record 7, 3
+Retrieving record 7, 5
+Retrieving record 7, 6
+Retrieving record 7, 7
+Retrieving record 7, 9
+Retrieving record 7, 10
+Retrieving record 7, 11
+Retrieving record 7, 13
+Retrieving record 7, 14
+Retrieving record 7, 15
+Retrieving record 7, 16
+Retrieving record 7, 17
+Retrieving record 7, 18
+
+  Test 4: Insert and Delete variable-length records
+Records in the page before deletion.
+Retrieved record, RID 7, 0  value:Alphabet:A
+Retrieved record, RID 7, 1  value:Junk:B
+Retrieved record, RID 7, 2  value:Alphabet:AC
+Retrieved record, RID 7, 3  value:Junk:BD
+Retrieved record, RID 7, 4  value:Alphabet:ACE
+Retrieved record, RID 7, 5  value:Junk:BDF
+Retrieved record, RID 7, 6  value:Alphabet:ACEG
+Retrieved record, RID 7, 7  value:Junk:BDFH
+Retrieved record, RID 7, 8  value:Alphabet:ACEGI
+Retrieved record, RID 7, 9  value:Junk:BDFHJ
+Retrieved record, RID 7, 10  value:Alphabet:ACEGIK
+Retrieved record, RID 7, 11  value:Junk:BDFHJL
+Retrieved record, RID 7, 12  value:Alphabet:ACEGIKM
+Retrieved record, RID 7, 13  value:Junk:BDFHJLN
+Retrieved record, RID 7, 14  value:Alphabet:ACEGIKMO
+Retrieved record, RID 7, 15  value:Junk:BDFHJLNP
+Retrieved record, RID 7, 16  value:Alphabet:ACEGIKMOQ
+Retrieved record, RID 7, 17  value:Junk:BDFHJLNPR
+Retrieved record, RID 7, 18  value:Alphabet:ACEGIKMOQS
+Retrieved record, RID 7, 19  value:Junk:BDFHJLNPRT
+Deleting Records
+Deleting Rid(7,0).
+Deleting Rid(7,4).
+Deleting Rid(7,8).
+Deleting Rid(7,12).
+Deleting Rid(7,19).
+Inserted record, RID 7, 0
+After Deletion. 
+Retrieving record 7, 0  value:Alphabet:ACEGIKMOQSZ
+Retrieving record 7, 1  value:Junk:B
+Retrieving record 7, 2  value:Alphabet:AC
+Retrieving record 7, 3  value:Junk:BD
+Retrieving record 7, 5  value:Junk:BDF
+Retrieving record 7, 6  value:Alphabet:ACEG
+Retrieving record 7, 7  value:Junk:BDFH
+Retrieving record 7, 9  value:Junk:BDFHJ
+Retrieving record 7, 10  value:Alphabet:ACEGIK
+Retrieving record 7, 11  value:Junk:BDFHJL
+Retrieving record 7, 13  value:Junk:BDFHJLN
+Retrieving record 7, 14  value:Alphabet:ACEGIKMO
+Retrieving record 7, 15  value:Junk:BDFHJLNP
+Retrieving record 7, 16  value:Alphabet:ACEGIKMOQ
+Retrieving record 7, 17  value:Junk:BDFHJLNPR
+Retrieving record 7, 18  value:Alphabet:ACEGIKMOQS
+
+dumpPage, this: 0x7fff7ebfab40
+curPage= 7, nextPage=8
+freePtr=219,  freeSpace=721, slotCnt=19
+slot[0].offset=198, slot[0].length=21
+slot[1].offset=0, slot[1].length=7
+slot[2].offset=7, slot[2].length=12
+slot[3].offset=19, slot[3].length=8
+slot[4].offset=27, slot[4].length=-1
+slot[5].offset=27, slot[5].length=9
+slot[6].offset=36, slot[6].length=14
+slot[7].offset=50, slot[7].length=10
+slot[8].offset=60, slot[8].length=-1
+slot[9].offset=60, slot[9].length=11
+slot[10].offset=71, slot[10].length=16
+slot[11].offset=87, slot[11].length=12
+slot[12].offset=99, slot[12].length=-1
+slot[13].offset=99, slot[13].length=13
+slot[14].offset=112, slot[14].length=18
+slot[15].offset=130, slot[15].length=14
+slot[16].offset=144, slot[16].length=19
+slot[17].offset=163, slot[17].length=15
+slot[18].offset=178, slot[18].length=20
+
+  Test 5: Test some error conditions
+Current Page No.: 7, Next Page No.: -1, Prev Page No.: -1, Available Space: 1000
+No record is deleted.
+
+No record is deleted. 
+
+FirstRecord in an empty page is handled correctly. 
+Overflow handled correctly.
+
+Current Page No.: 7, Next Page No.: -1, Prev Page No.: -1, Available Space: 1000
+
+  Test 7: Insert and Exchange fixed-size records
+Inserted record, RID 7, 0  value:0
+Inserted record, RID 7, 1  value:1
+Inserted record, RID 7, 2  value:2
+Inserted record, RID 7, 3  value:3
+Inserted record, RID 7, 4  value:4
+Inserted record, RID 7, 5  value:5
+Inserted record, RID 7, 6  value:6
+Inserted record, RID 7, 7  value:7
+Inserted record, RID 7, 8  value:8
+Inserted record, RID 7, 9  value:9
+Inserted record, RID 7, 10  value:10
+Inserted record, RID 7, 11  value:11
+Inserted record, RID 7, 12  value:12
+Inserted record, RID 7, 13  value:13
+Inserted record, RID 7, 14  value:14
+Inserted record, RID 7, 15  value:15
+Inserted record, RID 7, 16  value:16
+Inserted record, RID 7, 17  value:17
+Inserted record, RID 7, 18  value:18
+Inserted record, RID 7, 19  value:19
+Exchange Records
+Exchanging Rid(7,7,0,2).
+Exchanging Rid(7,7,6,4).
+Exchanging Rid(7,7,8,10).
+Exchanging Rid(7,7,14,12).
+Exchanging Rid(7,7,16,18).
+After Exchange.
+Retrieving record 7, 0  value:2
+Retrieving record 7, 1  value:1
+Retrieving record 7, 2  value:0
+Retrieving record 7, 3  value:3
+Retrieving record 7, 4  value:6
+Retrieving record 7, 5  value:5
+Retrieving record 7, 6  value:4
+Retrieving record 7, 7  value:7
+Retrieving record 7, 8  value:10
+Retrieving record 7, 9  value:9
+Retrieving record 7, 10  value:8
+Retrieving record 7, 11  value:11
+Retrieving record 7, 12  value:14
+Retrieving record 7, 13  value:13
+Retrieving record 7, 14  value:12
+Retrieving record 7, 15  value:15
+Retrieving record 7, 16  value:18
+Retrieving record 7, 17  value:17
+Retrieving record 7, 18  value:16
+Retrieving record 7, 19  value:19
+
+  Test 8: Insert and Exchange variable-length records
+Records in the page before deletion.
+Retrieved record, RID 7, 0  value:Alphabet:A
+Retrieved record, RID 7, 1  value:Junk:B
+Retrieved record, RID 7, 2  value:Alphabet:AC
+Retrieved record, RID 7, 3  value:Junk:BD
+Retrieved record, RID 7, 4  value:Alphabet:ACE
+Retrieved record, RID 7, 5  value:Junk:BDF
+Retrieved record, RID 7, 6  value:Alphabet:ACEG
+Retrieved record, RID 7, 7  value:Junk:BDFH
+Retrieved record, RID 7, 8  value:Alphabet:ACEGI
+Retrieved record, RID 7, 9  value:Junk:BDFHJ
+Retrieved record, RID 7, 10  value:Alphabet:ACEGIK
+Retrieved record, RID 7, 11  value:Junk:BDFHJL
+Retrieved record, RID 7, 12  value:Alphabet:ACEGIKM
+Retrieved record, RID 7, 13  value:Junk:BDFHJLN
+Retrieved record, RID 7, 14  value:Alphabet:ACEGIKMO
+Retrieved record, RID 7, 15  value:Junk:BDFHJLNP
+Retrieved record, RID 7, 16  value:Alphabet:ACEGIKMOQ
+Retrieved record, RID 7, 17  value:Junk:BDFHJLNPR
+Retrieved record, RID 7, 18  value:Alphabet:ACEGIKMOQS
+Retrieved record, RID 7, 19  value:Junk:BDFHJLNPRT
+Exchanging Records
+Exchanging Rid(7,7,0,2).
+Exchanging Rid(7,7,6,4).
+Exchanging Rid(7,7,8,10).
+Exchanging Rid(7,7,14,12).
+Exchanging Rid(7,7,16,18).
+After Exchange. 
+Retrieving record 7, 0  value:Alphabet:AC
+Retrieving record 7, 1  value:Junk:B
+Retrieving record 7, 2  value:Alphabet:A
+Retrieving record 7, 3  value:Junk:BD
+Retrieving record 7, 4  value:Alphabet:ACEG
+Retrieving record 7, 5  value:Junk:BDF
+Retrieving record 7, 6  value:Alphabet:ACE
+Retrieving record 7, 7  value:Junk:BDFH
+Retrieving record 7, 8  value:Alphabet:ACEGIK
+Retrieving record 7, 9  value:Junk:BDFHJ
+Retrieving record 7, 10  value:Alphabet:ACEGI
+Retrieving record 7, 11  value:Junk:BDFHJL
+Retrieving record 7, 12  value:Alphabet:ACEGIKMO
+Retrieving record 7, 13  value:Junk:BDFHJLN
+Retrieving record 7, 14  value:Alphabet:ACEGIKM
+Retrieving record 7, 15  value:Junk:BDFHJLNP
+Retrieving record 7, 16  value:Alphabet:ACEGIKMOQS
+Retrieving record 7, 17  value:Junk:BDFHJLNPR
+Retrieving record 7, 18  value:Alphabet:ACEGIKMOQ
+Retrieving record 7, 19  value:Junk:BDFHJLNPRT
+
+...HFPage Tests tests completed successfully.
+
