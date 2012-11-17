@@ -127,8 +127,10 @@ Status HFPage::deleteRecord(const RID& rid)
 	}
 	else{
 		// update all subsequent slots to point forward
-		for(int i = rid.slotNo+1; i < slotCnt; ++i)
-			slot[-i].offset -= rmSlot.length;
+		for(int i = rid.slotNo+1; i < slotCnt; ++i){
+			if(slot[-i].offset > rmSlot.offset)
+				slot[-i].offset -= rmSlot.length;
+		}
 	}
 
 	rmSlot.length = -1; // effectively delete the slot
