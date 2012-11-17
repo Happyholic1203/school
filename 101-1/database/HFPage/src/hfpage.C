@@ -22,7 +22,7 @@ void HFPage::init(PageId pageNo)
 	curPage = pageNo;
 	slotCnt = 0;
 	freePtr = 0;
-	freeSpace = MAX_SPACE - DPFIXED;
+	freeSpace = MAX_SPACE - DPFIXED + sizeof(slot_t);
 	slot[0].length = -1;
 	slot[0].offset = freePtr;
 }
@@ -127,15 +127,21 @@ Status HFPage::deleteRecord(const RID& rid)
 	int rmStart = rmSlot.offset;
 	int rmEnd = rmStart + rmSlot.length;
 	// does compaction, and handles freePtr, freeSpace
-	memmove(data + rmStart, data + rmEnd, rmSlot.length);
+	memmove(data + rmStart, data + rmEnd, freePtr - rmEnd);
 	freePtr -= rmSlot.length;
 	freeSpace += rmSlot.length;
-	rmSlot.length = -1; // effectively delete the slot
 
 	if(rid.slotNo == slotCnt - 1){ // last slot: delete the slot
-		freeSpace += sizeof(slot_t);
 		--slotCnt;
 	}
+	else{
+		// update all subsequent slots to point forward
+		for(int i = rid.slotNo+1; i < slotCnt; ++i)
+			slot[-i].offset -= rmSlot.length;
+	}
+
+	rmSlot.length = -1; // effectively delete the slot
+	freeSpace += sizeof(slot_t);
 
 	return OK;
 }
@@ -189,6 +195,7 @@ Status HFPage::nextRecord (RID curRid, RID& nextRid)
 			return OK;
 		}
 	}
+	return DONE;
 }
 
 // **********************************************************
@@ -238,7 +245,7 @@ Status HFPage::returnRecord(RID rid, char*& recPtr, int& recLen)
 int HFPage::available_space(void)
 {
 	// fill in the body
-	return freeSpace;
+	return freeSpace - (slotCnt+1) * sizeof(slot_t);
 }
 
 // **********************************************************
