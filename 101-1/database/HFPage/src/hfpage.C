@@ -164,118 +164,51 @@ Status HFPage::exchangeRecord(const RID& firstrid, const RID& secondrid)
 	slot_t& slot1 = ((offset1 <= offset2) ? slot[-firstrid.slotNo] : slot[-secondrid.slotNo]);
 	slot_t& slot2 = ((offset1 <= offset2) ? slot[-secondrid.slotNo] : slot[-firstrid.slotNo]);
 
-	assert(slot1.offset <= slot2.offset);
+	// assertion: slot1.offset <= slot2.offset
+	// Case: s1.length > s2.length (the other case is automatically handled)
+	// 1. initially: |---s1---|--b1--|-s2-|
+	// 2. buffer s1, s2 (using strings)
+	// 3. shift left b1 by s1.lengh - s2.length:
+	//               |----|--b1--|--------|
+	// 4. write out the buffers (s1, s2)
+	//               |-s2-|--b1--|---s1---|
+	// 5. update the slots
 
+
+	// 2. buffer s1, s2 (using strings)
 	string s1(data + slot1.offset, slot1.length);
 	string s2(data + slot2.offset, slot2.length);
 
+	// 3. shift left b1 by s1.lengh - s2.length:
+	// initially: |---s1---|--b1--|-s2-|
+	//                     | <- oldB1Start
+	// shift to : |----|--b1--|--------|
+	//                 | <- newB1Start
 	char* newB1Start = data + slot1.offset + slot2.length; // from step3
 	char* oldB1Start = data + slot1.offset + slot1.length; // from step1
 	int b1Len = slot2.offset - (slot1.offset + slot1.length);
 	memmove(newB1Start, oldB1Start, b1Len);
 
-	int diff = s1.size() - s2.size();
+	// 4. write out the buffers (s1, s2)
+	// initially: |---s1---|--b1--|-s2-|
+	//            | <- newS2Start
+	//            |-s2-|--b1--|---s1---|
+	//                        | <- newS1Start
+	int diff = s1.size() - s2.size(); // may be positive or negative
 	char* newS2Start = data + slot1.offset;
 	char* newS1Start = data + slot2.offset - diff;
-	// swap s1, s2 (buffered swap)
+	// swap s1, s2 (buffered)
 	memmove(newS2Start, s2.c_str(), s2.size());
 	memmove(newS1Start, s1.c_str(), s1.size());
 
-	// 5. update the slots: offset remain the same
+	// 5. update the slots
 	slot1.length = s2.size();
 	slot2.length = s1.size();
+	for(int i = 0; i < slotCnt; ++i){
+		if(slot[-i].offset > slot1.offset && slot[-i].offset < slot2.offset)
+			slot[-i].offset -= diff;
+	}
 	slot2.offset = slot2.offset - diff;
-	/*
-	const int& tmp = slot1.offset;
-	slot1.offset = slot2.offset - diff;
-	slot2.offset = tmp;
-	*/
-
-/*
-	// TODO: stopped here
-	if(slot1.length >= slot2.length){
-		// 1. initially: |---s1---|--b1--|-s2-|
-		// 2. buffer s1, s2 (using strings)
-		// 3. shift left b1 by s1.lengh - s2.length:
-		//               |----|--b1--|--------|
-		// 4. write out the buffers (s1, s2)
-		//               |-s2-|--b1--|---s1---|
-		// 5. update the slots
-
-		// 2. buffer s1, s2 (using strings)
-		string s1(data + slot1.offset, slot1.length);
-		string s2(data + slot2.offset, slot2.length);
-
-		// 3. shift left b1 by s1.lengh - s2.length:
-		// initially: |---s1---|--b1--|-s2-|
-		//                     | <- oldB1Start
-		// shift to : |----|--b1--|--------|
-		//                 | <- newB1Start
-		char* newB1Start = data + slot1.offset + slot2.length; // from step3
-		char* oldB1Start = data + slot1.offset + slot1.length; // from step1
-		int b1Len = slot2.offset - slot1.offset;
-		memmove(newB1Start, oldB1Start, b1Len);
-
-		// 4. write out the buffers (s1, s2)
-		// initially: |---s1---|--b1--|-s2-|
-		//            | <- newS2Start
-		//            |-s2-|--b1--|---s1---|
-		//                        | <- newS1Start
-		int diff = s1.size() - s2.size();
-		char* newS2Start = data + slot1.offset;
-		char* newS1Start = data + slot2.offset - diff;
-		// swap s1, s2 (buffered swap)
-		memmove(newS2Start, s2.c_str(), s2.size());
-		memmove(newS1Start, s1.c_str(), s1.size());
-
-		// 5. update the slots: lengths remain the same
-		const int& tmp = slot1.offset;
-		slot1.offset = slot2.offset - diff;
-		slot2.offset = tmp;
-
-	}
-	else{
-		// 1. initially: |-s1-|--b1--|---s2---|
-		// 2. buffer s1, s2 (using strings)
-		// 3. shift left b1 by s2.lengh - s1.length:
-		//               |--------|--b1--|----|
-		// 4. write out the buffers (s1, s2)
-		//               |---s2---|--b1--|-s1-|
-		// 5. update the slots
-
-		// 2. buffer s1, s2 (using strings)
-		string s1(data + slot1.offset, slot1.length);
-		string s2(data + slot2.offset, slot2.length);
-
-		// 3. shift left b1 by s2.lengh - s1.length:
-		// initially: |-s1-|--b1--|---s2---|
-		//                 | <- oldB1Start
-		// shift to : |--------|--b1--|----|
-		//                     | <- newB1Start
-		char* newB1Start = data + slot1.offset + slot2.length;
-		char* oldB1Start = data + slot1.offset + slot1.length;
-		int b1Len = slot2.offset - slot1.offset;
-		memmove(newB1Start, oldB1Start, b1Len);
-
-		// 4. write out the buffers (s1, s2)
-		// initially: |-s1-|--b1--|---s2---|
-		//            | <- newS2Start
-		// shift to : |---s2---|--b1--|-s1-|
-		//                            | <- newS1Start
-		int diff = s2.size() - s1.size();
-		char* newS2Start = data + slot1.offset;
-		char* newS1Start = data + slot2.offset + diff;
-		// swap s1, s2 (buffered swap)
-		memmove(newS2Start, s2.c_str(), s2.size());
-		memmove(newS1Start, s1.c_str(), s1.size());
-
-		// 5. update the slots: lengths remain the same
-		const int& tmp = slot1.offset;
-		slot1.offset = slot2.offset + diff;
-		slot2.offset = tmp;
-
-	}
-*/
 	return OK;
 }
 
