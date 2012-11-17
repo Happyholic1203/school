@@ -19,7 +19,6 @@
 
 void HFPage::init(PageId pageNo)
 {
-  // fill in the body
 	curPage = pageNo;
 	slotCnt = 0;
 	freePtr = 0;
@@ -50,28 +49,24 @@ void HFPage::dumpPage()
 // **********************************************************
 PageId HFPage::getPrevPage()
 {
-  // fill in the body
 	return prevPage;
 }
 
 // **********************************************************
 void HFPage::setPrevPage(PageId pageNo)
 {
-  // fill in the body
 	prevPage = pageNo;
 }
 
 // **********************************************************
 void HFPage::setNextPage(PageId pageNo)
 {
-  // fill in the body
 	nextPage = pageNo;
 }
 
 // **********************************************************
 PageId HFPage::getNextPage()
 {
-  // fill in the body
 	return nextPage;
 }
 
@@ -98,10 +93,6 @@ Status HFPage::insertRecord(char* recPtr, int recLen, RID& rid)
 	slot[-emptySlotIdx].offset = freePtr;
 	slot[-emptySlotIdx].length = recLen;
 
-/*
-	for(int i = 0; i < recLen; ++i)
-		data[freePtr++] = recPtr[i];
-*/
 	memcpy(data + freePtr, recPtr, recLen);
 	freePtr += recLen;
 	freeSpace -= sizeof(slot_t) + recLen;
@@ -117,10 +108,6 @@ Status HFPage::insertRecord(char* recPtr, int recLen, RID& rid)
 // Use memmove() rather than memcpy() as space may overlap.
 Status HFPage::deleteRecord(const RID& rid)
 {
-	// TODO: handle slot_t size problem
-	// TODO: delete if this is the last record
-	// rid.pageNo
-	// rid.slotNo
 	if(rid.pageNo != curPage || rid.slotNo >= slotCnt || rid.slotNo < 0)
 		return DONE;
 
@@ -129,6 +116,7 @@ Status HFPage::deleteRecord(const RID& rid)
 		return DONE;
 	int rmStart = rmSlot.offset;
 	int rmEnd = rmStart + rmSlot.length;
+
 	// does compaction, and handles freePtr, freeSpace
 	memmove(data + rmStart, data + rmEnd, freePtr - rmEnd);
 	freePtr -= rmSlot.length;
@@ -155,7 +143,6 @@ Status HFPage::deleteRecord(const RID& rid)
 // Use memmove() to move records if there is a hole while exchanging record.
 Status HFPage::exchangeRecord(const RID& firstrid, const RID& secondrid)
 {
-	// fill in the body
 	if(firstrid.pageNo != curPage || secondrid.pageNo != curPage)
 		return DONE;
 	
@@ -218,7 +205,6 @@ Status HFPage::exchangeRecord(const RID& firstrid, const RID& secondrid)
 // returns DONE if page contains no records.  Otherwise, returns OK
 Status HFPage::firstRecord(RID& firstRid)
 {
-	// fill in the body
 	for(int i = 0; i < slotCnt; ++i){
 		if(slot[-i].length != -1){
 			firstRid.slotNo = i;
@@ -234,13 +220,8 @@ Status HFPage::firstRecord(RID& firstRid)
 // returns DONE if no more records exist on the page; otherwise OK
 Status HFPage::nextRecord (RID curRid, RID& nextRid)
 {
-	// fill in the body
-	// TODO: modify this to return DONE after checking the test benches
-	assert(curRid.pageNo == curPage);
-	/*
 	if(curRid.pageNo != curPage)
 		return DONE;
-	*/
 
 	// boundary condition
 	if(curRid.slotNo == slotCnt - 1)
@@ -262,13 +243,8 @@ Status HFPage::nextRecord (RID curRid, RID& nextRid)
 // returns length and copies out record with RID rid
 Status HFPage::getRecord(RID rid, char* recPtr, int& recLen)
 {
-	// fill in the body
-	// TODO: modify this to return DONE after checking the test benches
-	assert(rid.pageNo == curPage);
-	/*
 	if(rid.pageNo != curPage)
 		return DONE;
-	*/
 
 	assert(rid.slotNo < slotCnt);
 	assert(slot[-rid.slotNo].length != -1);
@@ -285,13 +261,8 @@ Status HFPage::getRecord(RID rid, char* recPtr, int& recLen)
 // in recPtr.
 Status HFPage::returnRecord(RID rid, char*& recPtr, int& recLen)
 {
-	// fill in the body
-	// TODO: modify this to return DONE after checking the test benches
-	assert(rid.pageNo == curPage);
-	/*
 	if(rid.pageNo != curPage)
 		return DONE;
-	*/
 
 	assert(rid.slotNo < slotCnt);
 
@@ -304,7 +275,7 @@ Status HFPage::returnRecord(RID rid, char*& recPtr, int& recLen)
 // Returns the amount of available space on the heap file page
 int HFPage::available_space(void)
 {
-	// fill in the body
+	// one slot space is reserved for the next insertion
 	return freeSpace - (slotCnt+1) * sizeof(slot_t);
 }
 
@@ -313,7 +284,6 @@ int HFPage::available_space(void)
 // It scans the slot directory looking for a non-empty slot.
 bool HFPage::empty(void)
 {
-	// fill in the body
 	for(int i = 0; i < slotCnt; ++i)
 		if(slot[-i].length != -1)
 			return false;
