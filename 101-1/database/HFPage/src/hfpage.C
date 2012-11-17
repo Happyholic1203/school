@@ -25,6 +25,8 @@ void HFPage::init(PageId pageNo)
 	freeSpace = MAX_SPACE - DPFIXED + sizeof(slot_t);
 	slot[0].length = -1;
 	slot[0].offset = freePtr;
+	nextPage = -1;
+	prevPage = -1;
 }
 
 // **********************************************************
@@ -153,6 +155,34 @@ Status HFPage::deleteRecord(const RID& rid)
 Status HFPage::exchangeRecord(const RID& firstrid, const RID& secondrid)
 {
 	// fill in the body
+	if(firstrid.pageNo != curPage || secondrid.pageNo != curPage)
+		return DONE;
+	
+	slot_t& slot1 = slot[-firstrid.slotNo];
+	slot_t& slot2 = slot[-secondrid.slotNo];
+
+	if(slot1.offset > slot2.offset){
+		slot1 = slot[-secondrid.slotNo];
+		slot2 = slot[-firstrid.slotNo];
+	}
+
+	assert(slot1.offset <= slot2.offset);
+
+	// TODO: stopped here
+	if(slot1.length >= slot2.length){
+		// 1. initially: |---s1---|--b1--|-s2-|
+		// 2. tmp1 <- s1, l1 <- s1.length, tmp2 <- s2, l2 <- s2.length
+		// 3. shift left b1 by s1.lengh - s2.length:
+		//               |-s1-|--b1--|---s2---|
+		// 4. swap the strings
+	}
+	else{
+		// 1. initially: |-s1-|--b1--|---s2---|
+		// 2. tmp1 <- s1, l1 <- s1.length, tmp2 <- s2, l2 <- s2.length
+		// 3. shift left b1 by s1.lengh - s2.length:
+		//               |---s1---|--b1--|-s2-|
+		// 4. swap the strings
+	}
 }
 
 
@@ -188,6 +218,9 @@ Status HFPage::nextRecord (RID curRid, RID& nextRid)
 	// boundary condition
 	if(curRid.slotNo == slotCnt - 1)
 		return DONE;
+	if(curRid.slotNo < 0)
+		return FAIL;
+
 	for(int i = curRid.slotNo + 1; i < slotCnt; ++i){
 		if(slot[-i].length != -1){
 			nextRid.pageNo = curPage;
@@ -195,7 +228,7 @@ Status HFPage::nextRecord (RID curRid, RID& nextRid)
 			return OK;
 		}
 	}
-	return DONE;
+	return FAIL;
 }
 
 // **********************************************************
