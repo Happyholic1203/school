@@ -1,6 +1,6 @@
 /****************************************************************************
 FileName     [ maxPlanarSubset.cpp ]
-Synopsis     [ Algorithm PA #2, an iterative DP implementation ]
+Synopsis     [ Algorithm PA #2, an iterative DP bottom-up implementation ]
 Author       [ Yu-Cheng (Henry) Huang ]
 Copyright    [ Copyleft(c) 2012 NTUEE, Taiwan ]
 ****************************************************************************/
@@ -47,7 +47,7 @@ int cnt[MAX_NUM_NODES];
 ArcList answerList;
 
 int main(){
-	int s, f, tmp;
+	int s, f, tmp, tmp2;
 	while(true){
 		cin >> n; // even
 		if(cin.eof())
@@ -69,77 +69,38 @@ int main(){
 		Status* statusTable = new Status[n * n];
 		memset(statusTable, END, n * n * sizeof(Status));
 		int* maxNumChordsTable = new int[n * n];
-		memset(maxNumChordsTable, -1, n * n * sizeof(int));
-		stack<pair<int, int> > callStack;
-		callStack.push(make_pair<int, int>(0, n-1));
-		// init
-		maxNumChordsTable[idx(0, 0)] = 0;
-		for(int i = 1; i < n; ++i){
-			maxNumChordsTable[idx(i, i)] = 0;
-			maxNumChordsTable[idx(i, i-1)] = 0;
-		}
-		// solve
-		while(!callStack.empty()){
-			int i = callStack.top().first;
-			int j = callStack.top().second;
-			callStack.pop();
-			int k = cnt[j];
-			if(k > j || k < i){ // outside
-				tmp = maxNumChordsTable[idx(i, j-1)];
-				if(tmp != -1){
-					maxNumChordsTable[idx(i, j)] = tmp;
+		memset(maxNumChordsTable, 0, n * n * sizeof(int));
+		// solve: bottom-up DP
+		int i, k;
+		for(int l = 2; l < n; ++l){
+			for(int j = n-1; j >= l; --j){
+				i = j - l;
+				k = cnt[j];
+				if(k > j || k < i){
 					statusTable[idx(i, j)] = OUTSIDE;
+					maxNumChordsTable[idx(i, j)] = maxNumChordsTable[idx(i, j-1)];
 				}
-				else{
-					callStack.push(make_pair<int, int>(i, j));
-					callStack.push(make_pair<int, int>(i, j-1));
-				}
-			}
-			else if(k == i){ // hit
-				tmp = maxNumChordsTable[idx(i+1, j-1)];
-				if(tmp != -1){
-					maxNumChordsTable[idx(i, j)] = tmp + 1;
+				else if(k == i){
 					statusTable[idx(i, j)] = HIT;
+					maxNumChordsTable[idx(i, j)] = maxNumChordsTable[idx(i+1, j-1)] + 1;
 				}
 				else{
-					callStack.push(make_pair<int, int>(i, j));
-					callStack.push(make_pair<int, int>(i+1, j-1));
-				}
-			}
-			else{
-				tmp = maxNumChordsTable[idx(i, k-1)];
-				if(tmp == -1){
-					callStack.push(make_pair<int, int>(i, j));
-					callStack.push(make_pair<int, int>(i, k-1));
-					continue;
-				}
-				int n1 = tmp;
-				tmp = maxNumChordsTable[idx(k+1, j)];
-				if(tmp == -1){
-					callStack.push(make_pair<int, int>(i, j));
-					callStack.push(make_pair<int, int>(k+1, j));
-					continue;
-				}
-				n1 += tmp + 1;
-				tmp = maxNumChordsTable[idx(i, j-1)];
-				if(tmp == -1){
-					callStack.push(make_pair<int, int>(i, j));
-					callStack.push(make_pair<int, int>(i, j-1));
-					continue;
-				}
-				int n2 = tmp;
-				if(n1 > n2){
-					statusTable[idx(i, j)] = WITHIN;
-					maxNumChordsTable[idx(i, j)] = n1;
-				}
-				else{
-					statusTable[idx(i, j)] = OUTSIDE;
-					maxNumChordsTable[idx(i, j)] = n2;
+					tmp = maxNumChordsTable[idx(i, k-1)] + maxNumChordsTable[idx(k+1, j)] + 1;
+					tmp2 = maxNumChordsTable[idx(i, j-1)];
+					if(tmp > tmp2){
+						statusTable[idx(i, j)] = WITHIN;
+						maxNumChordsTable[idx(i, j)] = tmp;
+					}
+					else{
+						statusTable[idx(i, j)] = OUTSIDE;
+						maxNumChordsTable[idx(i, j)] = tmp2;
+					}
 				}
 			}
 		}
 		cout << maxNumChordsTable[idx(0, n-1)] << endl;
 		// retrieve trace
+		stack<pair<int, int> > callStack;
 		callStack.push(make_pair(0, n-1));
 		while(!callStack.empty()){
 			int i = callStack.top().first;
