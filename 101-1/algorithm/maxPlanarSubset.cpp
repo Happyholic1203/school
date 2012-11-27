@@ -11,7 +11,7 @@ Copyright    [ Copyleft(c) 2012 NTUEE, Taiwan ]
 #include <stack>
 using namespace std;
 
-#define MAX_NUM_NODES 100001
+#define MAX_NUM_NODES 200001
 
 // definitions
 struct Arc{
@@ -66,9 +66,9 @@ int main(){
 		}
 
 		// DP elements for iterative implementation
-		Status* statusTable = new Status[n * n];
+		Status* statusTable = new Status[n * n]; // for answer retrieval
 		memset(statusTable, END, n * n * sizeof(Status));
-		int* maxNumChordsTable = new int[n * n];
+		int* maxNumChordsTable = new int[n * n]; // memoization
 		memset(maxNumChordsTable, 0, n * n * sizeof(int));
 		// solve: bottom-up DP
 		int i, k;
