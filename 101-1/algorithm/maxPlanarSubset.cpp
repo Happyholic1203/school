@@ -1,3 +1,10 @@
+/****************************************************************************
+FileName     [ maxPlanarSubset.cpp ]
+Synopsis     [ Algorithm PA #2, an iterative DP implementation ]
+Author       [ Yu-Cheng (Henry) Huang ]
+Copyright    [ Copyleft(c) 2012 NTUEE, Taiwan ]
+****************************************************************************/
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -24,9 +31,8 @@ enum Status{
 };
 
 typedef vector<Arc> ArcList;
-typedef vector<vector<Status> > StatusMatrix;
-typedef vector<vector<int> > IntMatrix;
 
+// for STL sorting
 bool arcCompare(Arc a1, Arc a2){
 	return a1.start < a2.start;
 }
@@ -49,6 +55,7 @@ int main(){
 		if(n % 2 != 0){
 			cerr << "Error: Illegal number of nodes!!!" << endl;
 			exit(0);
+		
 		}
 	
 		// parsing
@@ -59,7 +66,6 @@ int main(){
 		}
 
 		// DP elements for iterative implementation
-		//StatusMatrix statusTable(n, vector<Status>(n, ILLEGAL));
 		Status* statusTable = new Status[n * n];
 		memset(statusTable, END, n * n * sizeof(Status));
 		int* maxNumChordsTable = new int[n * n];
