@@ -9,25 +9,33 @@ Copyright    [ Copyleft(c) 2012 NTUEE, Taiwan ]
 #include <vector>
 #include <algorithm>
 #include <stack>
+#include <map>
 using namespace std;
 
 #define MAX_NUM_NODES 200001
+#define THRESHOLD 22000
 
 // definitions
 struct Arc{
 	Arc(int s, int f){
-		start = s;
-		finish = f;
+		if(s < f){
+			start = s;
+			finish = f;
+		}
+		else{
+			start = f;
+			finish = s;
+		}
 	}
 	int start;
 	int finish;
 };
 
 enum Status{
+	END,
 	WITHIN,
 	OUTSIDE,
-	HIT,
-	END
+	HIT
 };
 
 typedef vector<Arc> ArcList;
@@ -38,12 +46,20 @@ bool arcCompare(Arc a1, Arc a2){
 }
 
 // helper functions
-int idx(const int& x, const int& y);
+int solve(const int&, const int&);
+void retrieve(const int&, const int&);
+int& table(const int&, const int&);
 void pick(const int&, const int&);
+void unPick(const int&, const int&);
+bool isPicked(const int&, const int&);
 
 // global variables
-int n; // number of activities
+int n; // number of nodes
 int cnt[MAX_NUM_NODES];
+int maxNumChordsTable[THRESHOLD][THRESHOLD]; // memoization
+vector<int> largeTable[MAX_NUM_NODES]; // for large inputs
+bool smallPick[THRESHOLD][THRESHOLD];
+vector<bool> largePick[MAX_NUM_NODES];
 ArcList answerList;
 
 int main(){
@@ -55,7 +71,6 @@ int main(){
 		if(n % 2 != 0){
 			cerr << "Error: Illegal number of nodes!!!" << endl;
 			exit(0);
-		
 		}
 	
 		// parsing
@@ -65,81 +80,97 @@ int main(){
 			cnt[f] = s;
 		}
 
-		// DP elements for iterative implementation
-		Status* statusTable = new Status[n * n]; // for answer retrieval
-		memset(statusTable, END, n * n * sizeof(Status));
-		int* maxNumChordsTable = new int[n * n]; // memoization
-		memset(maxNumChordsTable, 0, n * n * sizeof(int));
-		// solve: bottom-up DP
-		int i, k;
-		for(int l = 2; l < n; ++l){
-			for(int j = n-1; j >= l; --j){
-				i = j - l;
-				k = cnt[j];
-				if(k > j || k < i){
-					//statusTable[idx(i, j)] = OUTSIDE;
-					maxNumChordsTable[idx(i, j)] = maxNumChordsTable[idx(i, j-1)];
-				}
-				else if(k == i){
-					//statusTable[idx(i, j)] = HIT;
-					maxNumChordsTable[idx(i, j)] = maxNumChordsTable[idx(i+1, j-1)] + 1;
-				}
-				else{
-					tmp = maxNumChordsTable[idx(i, k-1)] + maxNumChordsTable[idx(k+1, j)] + 1;
-					tmp2 = maxNumChordsTable[idx(i, j-1)];
-					if(tmp > tmp2){
-						//statusTable[idx(i, j)] = WITHIN;
-						maxNumChordsTable[idx(i, j)] = tmp;
-					}
-					else{
-						//statusTable[idx(i, j)] = OUTSIDE;
-						maxNumChordsTable[idx(i, j)] = tmp2;
-					}
-				}
+		// init
+		for(int i = 0; i < n; ++i){
+			for(int j = i+1; j < n; ++j){
+				table(i, j) = -1;
+				unPick(i, j);
 			}
 		}
-		cout << maxNumChordsTable[idx(0, n-1)] << endl;
-		// retrieve trace
-		stack<pair<int, int> > callStack;
-		callStack.push(make_pair(0, n-1));
-		while(!callStack.empty()){
-			int i = callStack.top().first;
-			int j = callStack.top().second;
-			callStack.pop();
-			switch(statusTable[idx(i, j)]){
-				case END: continue;
-				case HIT: 
-					pick(i, j); 
-					callStack.push(make_pair(i+1, j-1));
-					continue;
-				case OUTSIDE:
-					callStack.push(make_pair(i, j-1));
-					continue;
-				case WITHIN:
-					pick(j, cnt[j]);
-					callStack.push(make_pair(i, cnt[j]-1));
-					callStack.push(make_pair(cnt[j]+1, j));
-					continue;
-			}
-		}
+
+		tmp = solve(0, n-1);
+		cout << tmp << endl;
+		answerList.reserve(tmp);
+		retrieve(0, n-1);
+
 		// print trace
 		sort(answerList.begin(), answerList.end(), arcCompare);
 		for(int i = 0, end = answerList.size(); i < end; ++i)
 			cout << answerList[i].start << " " << answerList[i].finish << endl;
 		cin >> s; // absorb the 0
-		delete[] maxNumChordsTable;
 		answerList.clear();
 	}
 	return 0;
 }
 
-inline int idx(const int& i, const int& j){
-	return (i * n) + j;
+inline int& table(const int& i, const int& j){
+	if(i < THRESHOLD && j < THRESHOLD)
+		return maxNumChordsTable[i][j];
+	else{
+		if(largeTable[i].size() == 0)
+			largeTable[i].resize(n - i);
+		return largeTable[i][j - i];
+	}
 }
 
 inline void pick(const int& i, const int& j){
-	if(i < j)
-		answerList.push_back(Arc(i, j));
-	else
-		answerList.push_back(Arc(j, i));
+	if(i < THRESHOLD && j < THRESHOLD)
+		smallPick[i][j] = true;
+	else{
+		if(largePick[i].size() == 0)
+			largePick[i].resize(n - i);
+		largePick[i][j - i] = true;
+	}
+}
+
+inline void unPick(const int& i, const int& j){
+	if(i < THRESHOLD && j < THRESHOLD)
+		smallPick[i][j] = false;
+	else{
+		if(largePick[i].size() == 0)
+			largePick[i].resize(n - i);
+		largePick[i][j - i] = false;
+	}
+}
+
+inline bool isPicked(const int& i, const int& j){
+	if(i < THRESHOLD && j < THRESHOLD)
+		return smallPick[i][j];
+	else{
+		return largePick[i][j - i];
+	}
+}
+
+int solve(const int& i, const int& j){
+	if(i >= j || i < 0 || j < 0)
+		return 0;
+	if(table(i, j) != -1)
+		return table(i, j);
+	if(cnt[j] < j && cnt[j] >= i){
+		int tmp1 = 1 + solve(i, cnt[j]) + solve(cnt[j]+1, j-1);
+		int tmp2 = solve(i, j-1);
+		if(tmp2 > tmp1){
+			return table(i, j) = tmp2;
+		}
+		else{
+			//pick[i][j] = true;
+			pick(i, j);
+			return table(i, j) = tmp1;
+		}
+	}
+	else{
+		return table(i, j) = solve(i, j-1);
+	}
+}
+
+void retrieve(const int& i, const int& j){
+	if(i >= j || i < 0 || j < 0)
+		return;
+	if(!isPicked(i, j))
+		retrieve(i, j-1);
+	else{
+		answerList.push_back(Arc(j, cnt[j]));
+		retrieve(i, cnt[j]);
+		retrieve(cnt[j]+1, j-1);
+	}
 }
