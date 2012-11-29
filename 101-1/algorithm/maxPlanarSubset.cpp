@@ -77,22 +77,22 @@ int main(){
 				i = j - l;
 				k = cnt[j];
 				if(k > j || k < i){
-					statusTable[idx(i, j)] = OUTSIDE;
+					//statusTable[idx(i, j)] = OUTSIDE;
 					maxNumChordsTable[idx(i, j)] = maxNumChordsTable[idx(i, j-1)];
 				}
 				else if(k == i){
-					statusTable[idx(i, j)] = HIT;
+					//statusTable[idx(i, j)] = HIT;
 					maxNumChordsTable[idx(i, j)] = maxNumChordsTable[idx(i+1, j-1)] + 1;
 				}
 				else{
 					tmp = maxNumChordsTable[idx(i, k-1)] + maxNumChordsTable[idx(k+1, j)] + 1;
 					tmp2 = maxNumChordsTable[idx(i, j-1)];
 					if(tmp > tmp2){
-						statusTable[idx(i, j)] = WITHIN;
+						//statusTable[idx(i, j)] = WITHIN;
 						maxNumChordsTable[idx(i, j)] = tmp;
 					}
 					else{
-						statusTable[idx(i, j)] = OUTSIDE;
+						//statusTable[idx(i, j)] = OUTSIDE;
 						maxNumChordsTable[idx(i, j)] = tmp2;
 					}
 				}
