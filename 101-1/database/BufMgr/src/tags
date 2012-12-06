@@ -1,0 +1,107 @@
+!_TAG_FILE_FORMAT	2	/supported features/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted/
+!_TAG_PROGRAM_AUTHOR	Steve Kirkendall	/kirkenda@cs.pdx.edu/
+!_TAG_PROGRAM_NAME	Elvis Ctags	//
+!_TAG_PROGRAM_URL	ftp://ftp.cs.pdx.edu/pub/elvis/README.html	/official site/
+!_TAG_PROGRAM_VERSION	2.1_4	//
+BMTester	BMTester.C	/^BMTester::BMTester() : TestDriver( "buftest" )$/;"	class:BMTester	f	ln:21
+BMTester	BMTester.C	/^BMTester::~BMTester()$/;"	class:BMTester	f	ln:25
+BUCKET	buf.h	47;"	d	ln:47
+BUCKET	test.cpp	10;"	d	ln:10	file:
+BUF_H	buf.h	7;"	class:BufMgr	d	ln:7
+BufMgr	buf.C	/^BufMgr::BufMgr(int numbuf, Replacer* replacer = 0)$/;"	class:BufMgr	f	ln:72
+BufMgr	buf.C	/^BufMgr::~BufMgr()$/;"	class:BufMgr	f	ln:93
+BufMgr	buf.h	/^class BufMgr {$/;"	c	ln:100
+D	test_driver.o	/^/;"	u	ln:14	file:
+E	buftest	/^âãE‰£x$/;"	v	ln:18
+E	buftest	/^âãE‰£x$/;"	v	ln:18
+E	buftest	/^âãE‰£x$/;"	v	ln:18
+E	buftest	/^∆$/;"	v	ln:35
+ELF	buf.o	/^ELF$/;"	f	ln:1
+ELF	test_driver.o	/^ELF$/;"	f	ln:1
+HTSIZE	buf.h	18;"	d	ln:18
+K	buftest	/^∏	˘Îçv$/;"	v	ln:36
+K	buftest	/^∏	˘Îçv$/;"	v	ln:36
+K	buftest	/^∏	˘Îçv$/;"	v	ln:36
+K	buftest	/^∏	˘Îçv$/;"	v	ln:36
+K	buftest	/^∏	˘Îçv$/;"	v	ln:36
+K	buftest	/^$/;"	v	ln:37
+MINIBASE_RESTART_FLAG	main.C	/^int MINIBASE_RESTART_FLAG = 0;$/;"	v	ln:7
+Makefile	README.first	/^Makefile: a sample makefile to compile your project,$/;"	v	ln:4
+NUMBUF	buf.h	15;"	d	ln:15
+P	BMTester.o	/^ELF$/;"	v	ln:1
+P	buftest	/^ELF/;"	f	ln:1
+P	buftest	/^∆$/;"	v	ln:35
+P	buftest	/^â»Î$/;"	v	ln:38
+P	buftest	/^çP$/;"	v	ln:39
+PHONY	Makefile	/^.PHONY: depend clean backup setup$/;"	v	ln:9
+PageId	test.cpp	/^typedef int PageId; $/;"	t	ln:5	file:
+Replacer	buf.h	/^class Replacer;$/;"	v	ln:34
+S	buftest	/^çP$/;"	f	ln:39
+TestDriver	test_driver.C	/^TestDriver::TestDriver( const char* nameRoot )$/;"	class:TestDriver	f	ln:21
+TestDriver	test_driver.C	/^TestDriver::~TestDriver()$/;"	class:TestDriver	f	ln:37
+U	buftest	/^$/;"	v	ln:34
+add_to_candidate	buf.C	/^void BufMgr::add_to_candidate(list<int> &list, int frame_number) {$/;"	class:BufMgr	f	ln:49
+bufErrCodes	buf.h	/^enum bufErrCodes  {$/;"	u	ln:26
+bufErrCodes	ErrProc.sample	/^enum bufErrCodes  {HASHTBLERROR, HASHNOTFOUND, BUFFEREXCEEDED};$/;"	u	ln:32	file:
+bufErrMsgs	buf.C	/^static const char* bufErrMsgs[] = $/;"	v	ln:10	file:
+bufErrMsgs	ErrProc.sample	/^static const char* bufErrMsgs[] = { "hash table error",$/;"	v	ln:42	file:
+descriptor	buf.h	/^struct descriptor {$/;"	s	ln:36
+flushAllPages	buf.C	/^Status BufMgr::flushAllPages()$/;"	class:BufMgr	f	ln:241
+flushPage	buf.C	/^Status BufMgr::flushPage(PageId pageId)$/;"	class:BufMgr	f	ln:229
+freePage	buf.C	/^Status BufMgr::freePage(PageId globalPageId)$/;"	class:BufMgr	f	ln:213
+h	buftest	/^∆$/;"	v	ln:35
+h	buftest	/^çP$/;"	u	ln:39	file:
+hash	buf.h	/^class hash {$/;"	c	ln:48
+hash	test.cpp	/^class hash {$/;"	c	ln:11	file:
+main	main.C	/^int main(int argc, char **argv)$/;"	f	ln:9
+main	test.cpp	/^int main(){$/;"	f	ln:63
+newPage	buf.C	/^Status BufMgr::newPage(PageId& firstPageId, Page*& firstPage, int howmany=1)$/;"	class:BufMgr	f	ln:177
+page	sample_output	/^new  page 10,2$/;"	v	ln:110
+page	sample_output	/^new  page 11,3$/;"	v	ln:111
+page	sample_output	/^new  page 12,4$/;"	v	ln:112
+page	sample_output	/^new  page 13,5$/;"	v	ln:113
+page	sample_output	/^new  page 14,6$/;"	v	ln:114
+page	sample_output	/^new  page 15,7$/;"	v	ln:115
+page	sample_output	/^new  page 16,8$/;"	v	ln:116
+page	sample_output	/^new  page 17,9$/;"	v	ln:117
+page	sample_output	/^new  page 18,10$/;"	v	ln:118
+page	sample_output	/^new  page 19,11$/;"	v	ln:119
+page	sample_output	/^new  page 20,12$/;"	v	ln:120
+page	sample_output	/^new  page 21,13$/;"	v	ln:121
+page	sample_output	/^new  page 22,14$/;"	v	ln:122
+page	sample_output	/^new  page 23,15$/;"	v	ln:123
+page_frame	buf.h	/^struct page_frame{$/;"	s	ln:42
+page_frame	test.cpp	/^struct page_frame {$/;"	s	ln:7	file:
+pinPage	buf.C	/^Status BufMgr::pinPage(PageId PageId_in_a_DB, Page*& page, int emptyPage=0)$/;"	class:BufMgr	f	ln:106
+pinPage	ErrProc.sample	/^Status BufMgr::pinPage(PageId PageId_in_a_DB, Page*& page, int emptyPage)$/;"	class:BufMgr	f	ln:55
+remove_from_candidate	buf.C	/^void BufMgr::remove_from_candidate(int frame_number) {$/;"	class:BufMgr	f	ln:24
+retrieve_candidate	buf.C	/^bool BufMgr::retrieve_candidate(int &frame_number) {$/;"	class:BufMgr	f	ln:53
+runAllTests	BMTester.C	/^Status BMTester::runAllTests()$/;"	class:BMTester	f	ln:254
+runAllTests	test_driver.C	/^Status TestDriver::runAllTests()$/;"	class:TestDriver	f	ln:192
+runTest	BMTester.C	/^void BMTester::runTest( Status& status, TestDriver::testFunction test )$/;"	class:BMTester	f	ln:210
+runTest	test_driver.C	/^void TestDriver::runTest( Status& status, TestDriver::testFunction test )$/;"	class:TestDriver	f	ln:111
+runTests	BMTester.C	/^Status BMTester::runTests()$/;"	class:BMTester	f	ln:248
+runTests	test_driver.C	/^Status TestDriver::runTests()$/;"	class:TestDriver	f	ln:126
+s	buftest	/^∆$/;"	u	ln:35	file:
+std	buf.h	/^using namespace std;$/;"	v	ln:13
+std	test.cpp	/^using namespace std;$/;"	v	ln:2
+t	buftest	/^âãE‰£x$/;"	f	ln:18
+test1	BMTester.C	/^int BMTester::test1() $/;"	class:BMTester	f	ln:34
+test1	test_driver.C	/^int TestDriver::test1()$/;"	class:TestDriver	f	ln:44
+test2	BMTester.C	/^int BMTester::test2()$/;"	class:BMTester	f	ln:86
+test2	test_driver.C	/^int TestDriver::test2()$/;"	class:TestDriver	f	ln:49
+test3	BMTester.C	/^int BMTester::test3() $/;"	class:BMTester	f	ln:97
+test3	test_driver.C	/^int TestDriver::test3()$/;"	class:TestDriver	f	ln:54
+test4	BMTester.C	/^int BMTester::test4(){$/;"	class:BMTester	f	ln:183
+test4	test_driver.C	/^int TestDriver::test4()$/;"	class:TestDriver	f	ln:59
+test5	BMTester.C	/^int BMTester::test5(){$/;"	class:BMTester	f	ln:191
+test5	test_driver.C	/^int TestDriver::test5()$/;"	class:TestDriver	f	ln:64
+test6	BMTester.C	/^int BMTester::test6()$/;"	class:BMTester	f	ln:199
+test6	test_driver.C	/^int TestDriver::test6()$/;"	class:TestDriver	f	ln:69
+testFailure	test_driver.C	/^void TestDriver::testFailure( Status& status, Status expectedStatus,$/;"	class:TestDriver	f	ln:81
+testName	BMTester.C	/^const char* BMTester::testName()$/;"	class:BMTester	f	ln:204
+testName	test_driver.C	/^const char* TestDriver::testName()$/;"	class:TestDriver	f	ln:75
+u	test_driver.o	/^/;"	u	ln:10	file:
+unpinPage	buf.C	/^Status BufMgr::unpinPage(PageId globalPageId_in_a_DB, int dirty=FALSE, int hate=FALSE)$/;"	class:BufMgr	f	ln:146
+x	buftest	/^âãEÏãx$/;"	v	ln:17
